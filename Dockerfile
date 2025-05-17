@@ -7,23 +7,20 @@ WORKDIR /app
 COPY package.json package-lock.json* pnpm-lock.yaml* ./
 RUN npm install
 
-# Copy the source code
+# Copy all source code
 COPY . .
 
-# Build the app
+# Build the Vite React app
 RUN npm run build
 
-# Step 2: Serve with a lightweight web server
+# Step 2: Serve the built app with default Nginx
 FROM nginx:stable-alpine
 
-# Copy built files to nginx public folder
+# Copy built files to Nginx's public directory
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Remove default nginx config and replace with ours
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
-
-# Expose the default nginx port
+# Expose port 80 for CapRover
 EXPOSE 80
 
+# Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
