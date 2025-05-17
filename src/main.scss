@@ -1,0 +1,102 @@
+@use "./style/layout" as *;
+@use "./style/animation" as *;
+
+// =============================================================
+// RESET CSS
+// =============================================================
+* {
+    // margin: 0;
+    // padding: 0;
+    box-sizing: border-box !important;
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+    dl,
+    ol,
+    ul {
+        list-style: none;
+        margin: 0;
+    }
+}
+html,
+body {
+    width: 100vw;
+    background-color: #e3e6e6;
+    margin: 0;
+    padding: 0;
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
+    overflow: hidden;
+    // background-color: aqua;
+}
+
+#root {
+    width: 100%;
+    position: relative;
+    // font-family: "Syne", sans-serif;
+}
+
+// Layout
+// ======================================
+
+// Element options
+// ======================================
+.hide-navbar {
+    .navbar {
+        display: none !important;
+    }
+    .nav-map {
+        display: block !important;
+    }
+}
+
+.hide-footer .footer {
+    display: none !important;
+}
+
+.hide-navbar-footer .navbar,
+.hide-navbar-footer .footer {
+    display: none !important;
+}
+
+.hidden-scroll {
+    overflow: auto;
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
+}
+
+.c {
+    border: 1px solid red;
+}
+.c > * {
+    border: 1px solid green;
+}
+
+.hide-navbar.hide-footer {
+    min-height: 100vh;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+
+    > * {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+// Responsive
+[class^="m-"] {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    [class^="m-"] {
+        display: block !important;
+    }
+}

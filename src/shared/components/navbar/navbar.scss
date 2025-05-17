@@ -1,0 +1,24 @@
+// Các biến màu
+$primary-red: #d4173f;
+$secondary-red: #c41230;
+$accent-yellow: #ffcc29;
+
+.navbar {
+	// background-color: transparent !important;
+	background-color: red;
+	// border-top: 1px solid rgba(231, 13, 13, 0.986);
+	margin-top: -1px;
+}
+
+// ---------------------------------------------------
+// Responsive | 600
+// ---------------------------------------------------
+
+@media (max-width: 600px) {
+	nav {
+		height: 50px;
+		.navigator {
+			display: none;
+		}
+	}
+}
