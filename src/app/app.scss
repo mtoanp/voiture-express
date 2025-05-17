@@ -4,15 +4,15 @@
     display: flex;
     flex-direction: column;
 
-    &:has(main .game-zone) {
-        .navbar,
-        .footer {
-            display: none !important;
-        }
-        .nav-map {
-            display: block !important;
-        }
-    }
+    // &:has(main .game-zone) {
+    //     .navbar,
+    //     .footer {
+    //         display: none !important;
+    //     }
+    //     .nav-map {
+    //         display: block !important;
+    //     }
+    // }
 
     main {
         flex: 1;
