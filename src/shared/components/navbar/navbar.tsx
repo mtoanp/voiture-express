@@ -1,5 +1,6 @@
 import "./navbar.scss";
 import { NavLink } from "react-router-dom";
+import { FaUser } from "react-icons/fa"; // FontAwesome
 
 const Navbar = () => {
   // const { isAuthenticated, logout } = useAuth();
@@ -11,12 +12,12 @@ const Navbar = () => {
   // };
 
   return (
-    <nav className="navbar w-full bg-gradient-to-r from-purple-500 to-blue-500 shadow-md px-6 py-1 text-white flex justify-between items-center">
+    <nav className="navbar w-full px-4 text-white flex justify-between items-center">
       <NavLink to="/">Home</NavLink>
       <NavLink to="/users">Users</NavLink>
       <div className="nav-right">
         <NavLink to="/auth" className="text-gray-700 hover:text-blue-600 transition">
-          Auth
+          <FaUser size={20} />
         </NavLink>
       </div>
     </nav>

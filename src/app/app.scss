@@ -4,17 +4,24 @@
     display: flex;
     flex-direction: column;
 
-    // &:has(main .game-zone) {
-    //     .navbar,
-    //     .footer {
-    //         display: none !important;
-    //     }
-    //     .nav-map {
-    //         display: block !important;
-    //     }
-    // }
+    &:has(main .home-page) {
+        nav,
+        footer {
+            background-color: transparent !important;
+        }
+    }
+
+    nav {
+        height: 50px;
+        z-index: 2;
+    }
 
     main {
         flex: 1;
+    }
+
+    footer {
+        height: 30px;
+        z-index: 2;
     }
 }

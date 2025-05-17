@@ -7,7 +7,7 @@ const AuthLayout = () => {
   const isLogin = location.pathname.includes("login");
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="h-full flex flex-col items-center justify-center">
       <div className="flex space-x-4 mb-6">
         <button
           onClick={() => navigate("/auth/login")}

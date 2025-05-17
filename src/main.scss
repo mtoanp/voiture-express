@@ -1,3 +1,6 @@
+@use "./style/layout" as *;
+@use "./style/animation" as *;
+
 // =============================================================
 // RESET CSS
 // =============================================================
@@ -25,7 +28,8 @@ body {
     &::-webkit-scrollbar {
         width: 0px;
     }
-    // background: bottom left repeat-x fixed url('./assets/images/bgs/m2.png');
+    overflow: hidden;
+    // background-color: aqua;
 }
 
 #root {

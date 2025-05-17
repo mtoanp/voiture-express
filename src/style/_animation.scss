@@ -1,0 +1,259 @@
+// ANIMATION
+// ================================================================== //
+
+// TEXT
+// ================================================================== //
+.typing {
+    display: inline-block;
+    overflow: hidden;
+    // white-space: nowrap;
+    white-space: normal;
+    border-right: 2px solid black;
+    // width: 0;
+    max-width: fit-content;
+
+    // animation: typing 2.5s steps(40, end) forwards;
+    // blink-caret 0.75s step-end infinite;
+
+    animation: fadeIn 2.5s ease-in-out forwards;
+}
+
+// Typing animation
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+// Cursor blink animation
+@keyframes blink-caret {
+    0%,
+    100% {
+        border-color: transparent;
+    }
+    50% {
+        border-color: rgb(221, 18, 18);
+    }
+}
+
+// Multi Lines Typing
+// -----------------------------------
+// .content {
+//     font-family: monospace;
+// }
+$text-color: rgba(77, 236, 228, 0.767);
+
+.typing-multiline {
+    color: #0000;
+    background:
+        linear-gradient(-90deg, $text-color 5px, #0000 0) 10px 0,
+        linear-gradient($text-color 0 0) 0 0;
+    background-size: calc(var(--n) * 1ch) 200%;
+    -webkit-background-clip: padding-box, text;
+    background-clip: padding-box, text;
+    background-repeat: no-repeat;
+    animation:
+        b 0.7s infinite steps(1),
+        t calc(var(--n) * 0.05s) steps(var(--n)) forwards;
+}
+
+@keyframes t {
+    from {
+        background-size: 0 200%;
+    }
+}
+@keyframes b {
+    50% {
+        background-position:
+            0 -100%,
+            0 0;
+    }
+}
+
+// ------------------------------------------------
+.text-rainbow {
+    background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);
+    background-size: 400% 100%;
+    animation: rainbow 6s ease-in-out infinite alternate;
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes rainbow {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+// BACKGROUND
+// ================================================================== //
+.bg-rainbow {
+    background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);
+    background-size: 400% 100%;
+    animation: rainbow-background 6s ease-in-out infinite alternate;
+}
+
+@keyframes rainbow-background {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+// ------------------------------------------------
+.bg-colors {
+    animation: colorSwitch 5s ease-in-out infinite;
+}
+
+@keyframes colorSwitch {
+    0%,
+    100% {
+        background-color: #007bff; // Bleu
+    }
+    50% {
+        background-color: #ff7f7f; // Rouge
+    }
+}
+
+// OTHERS
+// ================================================================== //
+.fadeIn {
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
+/* Optional: animation for fading out splash screen */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+// BORDER ANIMATION
+// ================================================================== //
+@property --border-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.animated-border {
+    /* add the animation, but pause it by default */
+    animation: spin 2.5s infinite linear;
+    background:
+      /* Background colors don’t work with `background-origin`, so use a gradient. */
+        linear-gradient(to bottom, oklch(0.1 0.2 240 / 0.95), oklch(0.1 0.2 240 / 0.95)) padding-box,
+        /* ends at inner border edges */
+            conic-gradient(from var(--bg-angle) in oklch longer hue, oklch(0.85 0.37 0) 0 0) border-box; /* extends to outer border edges */
+
+    /* a clear border lets the background gradient shine through */
+    border: 6px solid transparent;
+
+    /* unpause the animation on hover */
+    &:hover {
+        // animation-play-state: running;
+        animation-play-state: paused;
+    }
+}
+
+@keyframes spin {
+    to {
+        --bg-angle: 360deg;
+    }
+}
+
+// ------------------------------------------------
+.box {
+    --border-angle: 0deg;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 2px 4px hsl(0 0% 0% / 25%);
+    animation: border-angle-rotate 2s infinite linear;
+    border: 0.5rem solid transparent;
+    position: relative;
+
+    &.a {
+        background:
+            linear-gradient(red, white) padding-box,
+            conic-gradient(
+                    from var(--border-angle),
+                    oklch(100% 100% 0deg),
+                    oklch(100% 100% 45deg),
+                    oklch(100% 100% 90deg),
+                    oklch(100% 100% 135deg),
+                    oklch(100% 100% 180deg),
+                    oklch(100% 100% 225deg),
+                    oklch(100% 100% 270deg),
+                    oklch(100% 100% 315deg),
+                    oklch(100% 100% 360deg)
+                )
+                border-box;
+    }
+
+    &.b {
+        background:
+            linear-gradient(white, white) padding-box,
+            conic-gradient(from var(--border-angle), var(--bg) 50%, white) border-box;
+    }
+
+    &.c {
+        border-radius: 100%;
+        background: radial-gradient(circle, var(--bg) 60%, transparent 60%);
+
+        &:before,
+        &:after {
+            content: "";
+            display: block;
+            position: absolute;
+            inset: 4px;
+            border-radius: 100%;
+            animation: border-angle-rotate 4s infinite linear;
+            z-index: -1;
+        }
+
+        &:before {
+            inset: 0;
+            background: repeating-conic-gradient(
+                    from var(--border-angle),
+                    var(--bg),
+                    var(--bg) 30deg,
+                    oklch(100% 50% 190deg) calc(360deg / 6)
+                )
+                border-box;
+        }
+
+        &:after {
+            background: repeating-conic-gradient(
+                    from calc(var(--border-angle) * -1),
+                    oklch(100% 40% 50deg),
+                    black 60deg
+                )
+                border-box;
+        }
+    }
+}
+
+@keyframes border-angle-rotate {
+    from {
+        --border-angle: 0deg;
+    }
+    to {
+        --border-angle: 360deg;
+    }
+}
