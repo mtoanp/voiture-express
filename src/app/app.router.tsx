@@ -1,4 +1,4 @@
-import App from "./app2";
+import App from "./app";
 import { Home, NotFound } from "../features/index";
 import { authRoutes } from "../features/auth/auth.router";
 import { userRoutes } from "../features/user/user.router";
