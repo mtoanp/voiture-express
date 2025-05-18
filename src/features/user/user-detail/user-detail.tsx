@@ -1,24 +1,94 @@
 import "./user-detail.scss";
-import { useAuth } from "../../../features/auth/auth.context";
+import type { User } from "../user";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { userService } from "../user.service";
+import { useAuth } from "../../auth/auth.context";
 
-const UserDetails = () => {
+interface UserDetailsProps {
+  id?: string;
+}
+
+const UserDetails = ({ id: propId }: UserDetailsProps) => {
   const { currentUser } = useAuth();
+  const [user, setUser] = useState<User>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!currentUser) return null; // or a fallback UI
+  const { id: paramId } = useParams();
+  const id = propId || paramId; // use prop first, fallback to param
+  // console.warn(id);
+
+  const { state } = useLocation();
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate("/users");
+  };
+  const goToUpdate = () => navigate(`/users/${user?.id}/edit`, { state: { user } });
+
+  const getUser = async () => {
+    try {
+      if (state?.user) {
+        setUser(state.user);
+      } else if (id) {
+        const response = await userService.getById(id);
+        if (!response.ok) throw new Error("Failed to fetch user");
+        const data = await response.json();
+        console.warn("User data fetched", data);
+        setUser(data);
+      } else {
+        throw new Error("No user data available.");
+      }
+    } catch (error) {
+      setError((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (currentUser) {
+      getUser();
+    }
+  }, [id, state]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="user-detail flex flex-col py-4 gap-y-2 text-sm text-gray-700">
-      <div className="font-semibold">Welcome back 👋</div>
-      <div>
-        <span className="font-medium">Name:</span> {currentUser.name}
-      </div>
-      <div>
-        <span className="font-medium">Email:</span> {currentUser.email}
-      </div>
-      {currentUser.role && (
-        <div>
-          <span className="font-medium">Role:</span> {currentUser.role}
+    <div className="UserDetails">
+      <h2>User Details</h2>
+
+      {user ? (
+        <div className="space-y-2">
+          <p>
+            <strong>ID:</strong> {user.id}
+          </p>
+          <p>
+            <strong>Name:</strong> {user.name}
+          </p>
+          <p>
+            <strong>Email:</strong> {user.email}
+          </p>
+          <p>
+            <strong>Role:</strong> {user.role}
+          </p>
+          <p>
+            <strong>Tel:</strong> {user.tel}
+          </p>
+
+          <div className="flex gap-4 mt-4">
+            <button onClick={goBack} className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded">
+              Back
+            </button>
+            <button onClick={goToUpdate} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+              Update
+            </button>
+          </div>
         </div>
+      ) : (
+        <p>No user data available</p>
       )}
     </div>
   );

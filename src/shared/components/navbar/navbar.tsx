@@ -26,6 +26,7 @@ const Navbar = () => {
           </NavLink>
         ) : (
           <div className="">
+            {/* {currentUser.email} */}
             <button onClick={() => navigate("/profile")} className="cursor-pointer text-gray-700 hover:text-red-600 transition font-medium mr-4">
               <FaUser size={20} />
             </button>

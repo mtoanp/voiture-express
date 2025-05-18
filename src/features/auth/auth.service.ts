@@ -2,22 +2,22 @@ const api = import.meta.env.VITE_API_URL;
 const auth = api + "/auth";
 
 class AuthService {
-  private jwtToken: string | null = localStorage.getItem("jwtToken");
+  private accessToken: string | null = localStorage.getItem("accessToken");
 
   setToken(token: string) {
-    this.jwtToken = token;
-    localStorage.setItem("jwtToken", token);
+    this.accessToken = token;
+    localStorage.setItem("accessToken", token);
   }
 
   clearToken() {
-    this.jwtToken = null;
-    localStorage.removeItem("jwtToken");
+    this.accessToken = null;
+    localStorage.removeItem("accessToken");
   }
 
   private get headers() {
     return {
       "Content-Type": "application/json",
-      ...(this.jwtToken && { Authorization: `Bearer ${this.jwtToken}` }),
+      ...(this.accessToken && { Authorization: `Bearer ${this.accessToken}` }),
     };
   }
 
