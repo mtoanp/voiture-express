@@ -100,7 +100,7 @@ const UpdateUser = () => {
       }
 
       login(data.user, data.access_token); // update context if needed
-      navigate("/");
+      navigate("/profile");
     } catch (err) {
       setError((err as Error).message);
     } finally {
