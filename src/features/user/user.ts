@@ -4,6 +4,7 @@ export interface User {
   name?: string;
   role?: string;
   tel?: string;
+  document?: string;
 }
 
 // export interface CreateUserDto {
