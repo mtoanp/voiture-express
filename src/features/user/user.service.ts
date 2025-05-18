@@ -21,8 +21,6 @@ class UserService {
       "Content-Type": "application/json",
     };
     const token = this.getToken();
-
-    console.log("getHeader: token = ", token);
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }

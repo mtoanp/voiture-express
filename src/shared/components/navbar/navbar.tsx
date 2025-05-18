@@ -2,6 +2,7 @@ import "./navbar.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaPowerOff, FaUser } from "react-icons/fa"; // FontAwesome
 import { useAuth } from "../../../features/auth/auth.context";
+import { GiSteeringWheel } from "react-icons/gi";
 
 const Navbar = () => {
   const { currentUser, logout } = useAuth();
@@ -15,7 +16,8 @@ const Navbar = () => {
   return (
     <nav className="navbar w-full px-4 text-white flex justify-between items-center">
       <NavLink to="/" className="logo">
-        Home
+        {/* <img src="/logo.png" alt="VE Logo" style={{ width: "auto", height: "50px" }} /> */}
+        <GiSteeringWheel size={32} color={"#dc3545"} />
       </NavLink>
       <NavLink to="/users">Users</NavLink>
 

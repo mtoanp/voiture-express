@@ -1,0 +1,53 @@
+// ========================================================
+// CARD
+// ========================================================
+.card {
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 1rem;
+    transition:
+        transform 0.3s,
+        box-shadow 0.3s;
+
+    &:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    &:has(.header) {
+        padding-top: 3rem;
+    }
+
+    .header {
+        background-color: #353a521f;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 35px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        display: flex;
+        align-items: center;
+        padding: 0 1rem;
+
+        .title {
+            // color: #dbdfe279;
+            opacity: 0.8;
+        }
+
+        // img {
+        //     border-radius: 12px;
+        // }
+    }
+
+    .footer {
+        // margin-bottom: -1.5rem;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        min-height: 35px;
+    }
+}

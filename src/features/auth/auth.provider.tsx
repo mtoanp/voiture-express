@@ -22,14 +22,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("accessToken");
   };
 
-  // ✅ Validate or refresh token if available
-  const checkAndRefreshToken = async () => {
-    console.warn("checkAndRefreshToken");
+  // ✅ Validate or refresh token from server if available
+  const getCurrentUser = async () => {
+    console.warn("getCurrentUser");
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) return;
 
     try {
-      const response = await fetch(`${API}/auth/checkAndRefreshToken`, {
+      const response = await fetch(`${API}/auth/getCurrentUser`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // ✅ Auto run on app load
   useEffect(() => {
-    checkAndRefreshToken();
+    getCurrentUser();
   }, []);
 
   return <AuthContext.Provider value={{ currentUser, token, login, logout }}>{children}</AuthContext.Provider>;

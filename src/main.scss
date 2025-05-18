@@ -1,5 +1,6 @@
 @use "./style/layout" as *;
 @use "./style/animation" as *;
+@use "./style/element" as *;
 
 // =============================================================
 // RESET CSS
@@ -38,9 +39,6 @@ body {
     // font-family: "Syne", sans-serif;
 }
 
-// Layout
-// ======================================
-
 // Element options
 // ======================================
 .hide-navbar {
@@ -73,26 +71,6 @@ body {
 }
 .c > * {
     border: 1px solid green;
-}
-
-.hide-navbar.hide-footer {
-    min-height: 100vh;
-    height: 100vh;
-    width: 100vw;
-    position: fixed;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-
-    > * {
-        height: 100%;
-        width: 100%;
-    }
-}
-
-// Responsive
-[class^="m-"] {
-    display: none;
 }
 
 @media (max-width: 600px) {
