@@ -1,5 +1,5 @@
 import App from "./app";
-import { Home, NotFound } from "../features/index";
+import { Home, NotFound, Profile } from "../features/index";
 import { authRoutes } from "../features/auth/auth.router";
 import { userRoutes } from "../features/user/user.router";
 
@@ -10,6 +10,7 @@ const appRoutes = [
     errorElement: <NotFound />,
     children: [
       { path: "", element: <Home /> }, // Render Home component when URL is '/'
+      { path: "/profile", element: <Profile /> }, // Render Home component when URL is '/'
       ...authRoutes,
       ...userRoutes,
     ],
