@@ -1,21 +1,50 @@
 import "./login.scss";
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthService from "../auth.service"; // adjust path if needed
+import { useAuth } from "../auth.context";
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: handle login logic
-    console.log("Logging in with", email, password);
+    setError("");
+
+    try {
+      const res = await AuthService.logIn(email, password);
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        const msg = typeof data.message === "string" ? data.message : data.message?.message || "Login failed";
+        setError(msg);
+        return;
+      }
+
+      const data = await res.json();
+      const { user, accessToken } = data;
+      console.log(data);
+
+      // Save token in service (optional)
+      AuthService.setToken(accessToken);
+
+      // Save to context
+      login(user, accessToken);
+      navigate("/");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unexpected error");
+    }
   };
 
   return (
     <div className="login">
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
         <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Login</h2>
+        {error && <p className="text-red-600 text-sm mb-4 text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-gray-700 font-medium mb-1">Email</label>
