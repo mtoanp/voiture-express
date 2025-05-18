@@ -26,14 +26,14 @@ const LogIn = () => {
       }
 
       const data = await res.json();
-      const { user, accessToken } = data;
+      const { user, access_token } = data;
       console.log(data);
 
       // Save token in service (optional)
-      AuthService.setToken(accessToken);
+      AuthService.setToken(access_token);
 
       // Save to context
-      login(user, accessToken);
+      login(user, access_token);
       navigate("/profile");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unexpected error");
