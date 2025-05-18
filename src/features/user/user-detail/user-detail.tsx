@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { userService } from "../user.service";
 import { useAuth } from "../../auth/auth.context";
+import DocumentUpload from "../upload/document-upload";
 
 interface UserDetailsProps {
   id?: string;
@@ -57,7 +58,7 @@ const UserDetails = ({ id: propId }: UserDetailsProps) => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="UserDetails">
+    <div className="user-details">
       <h2>User Details</h2>
 
       {user ? (
@@ -78,6 +79,38 @@ const UserDetails = ({ id: propId }: UserDetailsProps) => {
             <strong>Tel:</strong> {user.tel}
           </p>
 
+          {/* 🖼️ Picture Zone */}
+          {user.document && (
+            <div className="mt-4">
+              <strong>Document:</strong>
+              <div className="mt-2 border rounded overflow-hidden w-full flex justify-center">
+                {(() => {
+                  const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(user.document);
+                  const isPDF = /\.pdf$/i.test(user.document);
+
+                  if (isImage) {
+                    return <img src={user.document} alt="User document" className="w-[80%] max-h-[500px] object-contain" />;
+                  }
+
+                  if (isPDF) {
+                    return (
+                      <object data={user.document} type="application/pdf" className="w-[80%] h-[600px] border">
+                        <p>
+                          Your browser does not support PDFs.{" "}
+                          <a href={user.document} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+                            Download PDF
+                          </a>
+                        </p>
+                      </object>
+                    );
+                  }
+
+                  return <p className="text-sm text-gray-500">Unsupported file type</p>;
+                })()}
+              </div>
+            </div>
+          )}
+
           <div className="flex gap-4 mt-4">
             <button onClick={goBack} className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded">
               Back
@@ -86,6 +119,8 @@ const UserDetails = ({ id: propId }: UserDetailsProps) => {
               Update
             </button>
           </div>
+
+          {user?.id && <DocumentUpload userId={user.id} />}
         </div>
       ) : (
         <p>No user data available</p>
