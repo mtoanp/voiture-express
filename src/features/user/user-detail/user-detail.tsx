@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { userService } from "../user.service";
 import { useAuth } from "../../auth/auth.context";
-import DocumentUpload from "../upload/document-upload";
+import DocumentUpload from "../document-upload/document-upload";
 
 interface UserDetailsProps {
   id?: string;
@@ -18,7 +18,6 @@ const UserDetails = ({ id: propId }: UserDetailsProps) => {
 
   const { id: paramId } = useParams();
   const id = propId || paramId; // use prop first, fallback to param
-  // console.warn(id);
 
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -58,69 +57,32 @@ const UserDetails = ({ id: propId }: UserDetailsProps) => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="user-details">
-      <h2>User Details</h2>
-
+    <div className="user-details h-full overflow-auto p-4 bg-white rounded shadow">
       {user ? (
-        <div className="space-y-2">
-          <p>
-            <strong>ID:</strong> {user.id}
-          </p>
-          <p>
-            <strong>Name:</strong> {user.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {user.email}
-          </p>
-          <p>
-            <strong>Role:</strong> {user.role}
-          </p>
-          <p>
-            <strong>Tel:</strong> {user.tel}
-          </p>
+        <div>
+          <div className="user-info card space-y-4 mt-4">
+            <h2 className="header text-2xl font-semibold mb-4">Infos</h2>
+            <p>
+              <strong>Name:</strong> {user.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
+            <p>
+              <strong>Tel:</strong> {user.tel}
+            </p>
 
-          {/* 🖼️ Picture Zone */}
-          {user.document && (
-            <div className="mt-4">
-              <strong>Document:</strong>
-              <div className="mt-2 border rounded overflow-hidden w-full flex justify-center">
-                {(() => {
-                  const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(user.document);
-                  const isPDF = /\.pdf$/i.test(user.document);
-
-                  if (isImage) {
-                    return <img src={user.document} alt="User document" className="w-[80%] max-h-[500px] object-contain" />;
-                  }
-
-                  if (isPDF) {
-                    return (
-                      <object data={user.document} type="application/pdf" className="w-[80%] h-[600px] border">
-                        <p>
-                          Your browser does not support PDFs.{" "}
-                          <a href={user.document} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
-                            Download PDF
-                          </a>
-                        </p>
-                      </object>
-                    );
-                  }
-
-                  return <p className="text-sm text-gray-500">Unsupported file type</p>;
-                })()}
-              </div>
+            <div className="flex gap-4">
+              <button onClick={goBack} className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded">
+                Back
+              </button>
+              <button onClick={goToUpdate} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                Update
+              </button>
             </div>
-          )}
-
-          <div className="flex gap-4 mt-4">
-            <button onClick={goBack} className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded">
-              Back
-            </button>
-            <button onClick={goToUpdate} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-              Update
-            </button>
           </div>
 
-          {user?.id && <DocumentUpload userId={user.id} />}
+          <DocumentUpload user={user} />
         </div>
       ) : (
         <p>No user data available</p>
