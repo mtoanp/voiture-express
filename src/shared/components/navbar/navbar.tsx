@@ -14,7 +14,9 @@ const Navbar = () => {
 
   return (
     <nav className="navbar w-full px-4 text-white flex justify-between items-center">
-      <NavLink to="/">Home</NavLink>
+      <NavLink to="/" className="logo">
+        Home
+      </NavLink>
       <NavLink to="/users">Users</NavLink>
 
       <div className="nav-right">
@@ -23,9 +25,15 @@ const Navbar = () => {
             <FaUser size={20} />
           </NavLink>
         ) : (
-          <button onClick={handleLogout} className="text-gray-700 hover:text-red-600 transition font-medium">
-            <FaPowerOff size={20} color="red" />
-          </button>
+          <div className="">
+            <button onClick={() => navigate("/profile")} className="cursor-pointer text-gray-700 hover:text-red-600 transition font-medium mr-4">
+              <FaUser size={20} />
+            </button>
+
+            <button onClick={handleLogout} className="cursor-pointer text-gray-700 hover:text-red-600 transition font-medium">
+              <FaPowerOff size={20} color="red" />
+            </button>
+          </div>
         )}
       </div>
     </nav>

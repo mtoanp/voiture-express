@@ -34,7 +34,7 @@ const LogIn = () => {
 
       // Save to context
       login(user, accessToken);
-      navigate("/");
+      navigate("/profile");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unexpected error");
     }
