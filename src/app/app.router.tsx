@@ -10,7 +10,10 @@ const appRoutes = [
     errorElement: <NotFound />,
     children: [
       { path: "", element: <Home /> }, // Render Home component when URL is '/'
-      { path: "/profile", element: <Profile /> }, // Render Home component when URL is '/'
+      {
+        element: <AuthGuard />,
+        children: [{ path: "profile", element: <Profile /> }],
+      },
       ...authRoutes,
       ...userRoutes,
     ],
@@ -19,4 +22,5 @@ const appRoutes = [
 
 // Create & Export router as an instantiated object
 import { createBrowserRouter } from "react-router-dom";
+import AuthGuard from "../features/auth/auth.guard";
 export const router = createBrowserRouter(appRoutes);

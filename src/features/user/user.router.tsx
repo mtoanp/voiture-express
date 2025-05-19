@@ -1,5 +1,5 @@
-// import { UserList, NewUser, EditUser, UserDetails } from "../pages";
-
+import AdminGuard from "../auth/admin.guard";
+import AuthGuard from "../auth/auth.guard";
 import NewUser from "./user-create/user-create";
 import UserDetails from "./user-detail/user-detail";
 import UserList from "./user-list/user-list";
@@ -7,20 +7,26 @@ import UpdateUser from "./user-update/user-update";
 
 export const userRoutes = [
   {
-    path: "/users",
+    path: "users",
+    element: <AuthGuard />, // 🔒 All /users routes require authentication
     children: [
       {
-        index: true, // this means "/users"
-        element: <UserList />,
+        element: <AdminGuard />, // 🔐 /users (list) is admin-only
+        children: [
+          {
+            index: true, // "/users"
+            element: <UserList />,
+          },
+          {
+            path: "", // optional "/users/"
+            element: <UserList />,
+          },
+        ],
       },
-      {
-        path: "", // optional fallback for "/users"
-        element: <UserList />,
-      },
+      // The rest are protected by AuthGuard only
+      { path: ":id", element: <UserDetails /> },
+      { path: "new", element: <NewUser /> },
+      { path: ":id/edit", element: <UpdateUser /> },
     ],
   },
-  { path: "users/:id", element: <UserDetails /> },
-  { path: "users/new", element: <NewUser /> },
-  { path: "users/:id/edit", element: <UpdateUser /> },
-  // { index: true, element: <UserList /> }, // default /auth shows login
 ];
