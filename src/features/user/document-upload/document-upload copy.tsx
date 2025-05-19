@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { uploadDocument, removeDocument } from "./document.service"; // adjust paths
 import type { User } from "../user"; // your User type
 
