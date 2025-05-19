@@ -19,7 +19,7 @@ const Navbar = () => {
         {/* <img src="/logo.png" alt="VE Logo" style={{ width: "auto", height: "50px" }} /> */}
         <GiSteeringWheel size={32} color={"#dc3545"} />
       </NavLink>
-      <NavLink to="/users">Users</NavLink>
+      {/* <NavLink to="/users">Users</NavLink> */}
 
       <div className="nav-right">
         {!currentUser ? (
