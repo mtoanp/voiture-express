@@ -11,7 +11,7 @@ class UserService {
 
   async getById(id: string) {
     const res = await fetchWithAuth(`${API}/${id}`);
-    return res.json();
+    return res;
   }
 
   async create(userData: User) {
@@ -19,7 +19,7 @@ class UserService {
       method: "POST",
       body: JSON.stringify(userData),
     });
-    return res.json();
+    return res;
   }
 
   async update(id: string, userData: User) {
@@ -27,14 +27,14 @@ class UserService {
       method: "PATCH",
       body: JSON.stringify(userData),
     });
-    return res.json();
+    return res;
   }
 
   async delete(id: string) {
     const res = await fetchWithAuth(`${API}/${id}`, {
       method: "DELETE",
     });
-    return res.json();
+    return res;
   }
 }
 
