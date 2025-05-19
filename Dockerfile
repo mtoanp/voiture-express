@@ -1,29 +1,25 @@
-# Step 1: Build the app
+# Step 1: Build the Vite React app
 FROM node:18-alpine AS builder
-
 WORKDIR /app
 
-# Install dependencies
-COPY package.json package-lock.json* pnpm-lock.yaml* ./
+# Accept build-time environment variables
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+
+# Copy project files
+COPY package.json pnpm-lock.yaml* ./
 RUN npm install
 
-# Copy the source code
 COPY . .
 
-# Build the app
+# 👇 Write .env file dynamically using build args
+RUN echo "VITE_API_URL=$VITE_API_URL" > .env
+
+# Run build (Vite will read from .env automatically)
 RUN npm run build
 
-# Step 2: Serve with a lightweight web server
+# Step 2: Serve built app with Nginx
 FROM nginx:stable-alpine
-
-# Copy built files to nginx public folder
 COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Remove default nginx config and replace with ours
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
-
-# Expose the default nginx port
 EXPOSE 80
-
 CMD ["nginx", "-g", "daemon off;"]
