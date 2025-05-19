@@ -1,11 +1,20 @@
+import { useEffect } from "react";
 import "./auth-layout.scss";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../core/contexts/auth.context";
 
 const AuthLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { currentUser } = useAuth();
 
   const isLogin = location.pathname.includes("login");
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
 
   return (
     <div className="auth-layout h-full flex flex-col items-center justify-center mx-auto">
