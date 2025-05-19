@@ -1,8 +1,10 @@
 .auth-layout {
     // background-color: black;
+    // background-color: #080710;
     .auth {
         $size: 100px;
         width: 500px;
+        background-color: #fdfdff;
         .background {
             width: 500px;
             height: 300px;
@@ -26,7 +28,7 @@
                 &:last-child {
                     background: linear-gradient(to right, #ff512f, #f09819);
                     right: -40px;
-                    top: 280px;
+                    top: 380px;
                 }
             }
         }
@@ -39,7 +41,7 @@
             z-index: 1 !important;
 
             width: 100%;
-            margin: 2rem auto;
+            margin: 1rem auto;
             display: flex;
             justify-content: space-between;
             gap: 1rem;

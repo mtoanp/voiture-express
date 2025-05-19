@@ -9,7 +9,7 @@ const AuthLayout = () => {
 
   return (
     <div className="auth-layout h-full flex flex-col items-center justify-center">
-      <div className="auth relative">
+      <div className="auth card relative">
         {/* background */}
         {/* <div className="background">
           <div className="shape"></div>
