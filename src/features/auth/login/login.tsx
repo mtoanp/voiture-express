@@ -1,7 +1,7 @@
 import "./login.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthService from "../auth.service";
+import authService from "../auth.service";
 import FormInput from "../../../shared/form/form-input/form-input";
 import { useAuth } from "../../../core/contexts/auth.context";
 
@@ -91,7 +91,7 @@ const LogIn = () => {
     }
 
     try {
-      const res = await AuthService.logIn(user.email, user.password);
+      const res = await authService.logIn(user.email, user.password);
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -101,7 +101,6 @@ const LogIn = () => {
       }
 
       const data = await res.json();
-      AuthService.setToken(data.access_token);
       login(data.user, data.access_token);
       navigate("/profile");
     } catch (err) {

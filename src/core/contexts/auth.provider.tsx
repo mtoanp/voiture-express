@@ -2,8 +2,7 @@ import { AuthContext } from "./auth.context";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import type { AuthUser } from "../../features/auth/auth-user";
-
-const API = import.meta.env.VITE_API_URL;
+import authService from "../../features/auth/auth.service";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
@@ -18,6 +17,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setCurrentUser(null);
+    clearToken();
+  };
+
+  const saveToken = (token: string) => {
+    setToken(token);
+    localStorage.setItem("accessToken", token);
+  };
+
+  const clearToken = () => {
     setToken(null);
     localStorage.removeItem("accessToken");
   };
@@ -27,28 +35,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // ✅ Validate or refresh token from server if available
   const getCurrentUser = async () => {
-    console.warn("getCurrentUser");
+    console.warn("Start app > getCurrentUser");
+
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) return;
 
     try {
-      const response = await fetch(`${API}/auth/getCurrentUser`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      if (!response.ok) {
-        logout(); // Token invalid
-        return;
-      }
-
-      const user = await response.json();
+      const user = await authService.getCurrentUser(accessToken);
       setCurrentUser(user);
-      setToken(accessToken);
+      saveToken(accessToken);
     } catch (error) {
       console.error("Token check failed:", error);
-      logout();
+      logout(); // 🔁 fallback if token is invalid
     }
   };
 
