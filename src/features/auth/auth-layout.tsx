@@ -8,8 +8,8 @@ const AuthLayout = () => {
   const isLogin = location.pathname.includes("login");
 
   return (
-    <div className="auth-layout h-full flex flex-col items-center justify-center">
-      <div className="auth card relative">
+    <div className="auth-layout h-full flex flex-col items-center justify-center mx-auto">
+      <div className="auth card relative w-full lg:w-[500px] mx-1">
         {/* background */}
         {/* <div className="background">
           <div className="shape"></div>
