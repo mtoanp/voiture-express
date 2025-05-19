@@ -22,6 +22,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("accessToken");
   };
 
+  // Directly define isAdmin as a boolean variable
+  const isAdmin = currentUser?.role === "admin";
+
   // ✅ Validate or refresh token from server if available
   const getCurrentUser = async () => {
     console.warn("getCurrentUser");
@@ -54,5 +57,5 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     getCurrentUser();
   }, []);
 
-  return <AuthContext.Provider value={{ currentUser, token, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ currentUser, token, login, logout, isAdmin }}>{children}</AuthContext.Provider>;
 };
