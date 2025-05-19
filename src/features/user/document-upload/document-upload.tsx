@@ -18,7 +18,9 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files?.[0] || null;
+    const input = e.target as HTMLInputElement;
+    const selected = input.files?.[0] || null;
+
     setFile(selected);
     setErrorMessage(null);
 
@@ -27,17 +29,23 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
     } else {
       setPreviewUrl(null);
     }
+
+    // ✅ Reset the file input to allow re-selecting same file later
+    input.value = "";
   };
 
   const clearPreview = () => {
     setFile(null);
     setPreviewUrl(null);
+    setLoading(false);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) return;
+
+    if (fileInputRef.current) fileInputRef.current.value = "";
 
     const allowedTypes = ["application/pdf", "image/jpeg"];
     if (!allowedTypes.includes(file.type)) {
@@ -62,14 +70,15 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
     try {
       const url = await uploadDocument(user.id!, file);
       setStatus("✅ Upload successful");
-      clearPreview();
       setDocumentUrl(url);
     } catch (err) {
       console.error(err);
       setStatus("❌ Upload failed");
     } finally {
+      console.log("upload complete");
+      clearPreview();
       setTimeout(() => {
-        setProgress(100);
+        setProgress(0);
         setLoading(false);
       }, 1000);
     }
@@ -130,7 +139,7 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
           <input ref={fileInputRef} id="file-input" type="file" accept=".pdf,image/jpeg" onChange={handleFileChange} hidden />
 
           <button type="submit" disabled={!file || loading} className="upload-btn">
-            {loading ? "Updating..." : "Update"}
+            {loading ? "Uploading..." : "Upload"}
           </button>
         </form>
 
@@ -166,7 +175,7 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
           </div>
         )}
 
-        {loading && <div className="processing">Processing...</div>}
+        {/* {loading && <div className="processing">Processing...</div>} */}
       </div>
 
       <div className="status w-full flex items-center justify-center text-center">{status}</div>
