@@ -57,7 +57,7 @@ const UserDetails = ({ id: propId }: UserDetailsProps) => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="user-details h-full overflow-auto p-4 bg-white rounded shadow">
+    <div className="user-details w-full lg:w-[70%] mx-auto h-full overflow-auto p-4 rounded">
       {user ? (
         <div>
           <div className="user-info card space-y-4 mt-4">

@@ -118,11 +118,10 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
 
   return (
     <div className="uploader-container card mt-8">
-      <h2 className="header text-2xl font-semibold">Permis Conduire</h2>
+      <h2 className="header text-2xl font-semibold">Permis de conduire</h2>
 
       <div className="uploader-document">
         {errorMessage && <div className="error">{errorMessage}</div>}
-        {status}
 
         <form onSubmit={handleUpload} className="form">
           <label htmlFor="file-input" className="full-container-label">
@@ -169,6 +168,8 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
 
         {loading && <div className="processing">Processing...</div>}
       </div>
+
+      <div className="status w-full flex items-center justify-center text-center">{status}</div>
 
       {renderDocument()}
     </div>
