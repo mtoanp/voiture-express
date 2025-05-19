@@ -1,9 +1,9 @@
 import "./user-create.scss";
-import { useAuth } from "../../auth/auth.context";
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { userService } from "../user.service";
 import FormInput from "../../../shared/form/form-input/form-input";
+import { useAuth } from "../../../core/contexts/auth.context";
 
 const NewUser = () => {
   const { currentUser, login } = useAuth();

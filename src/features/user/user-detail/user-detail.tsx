@@ -3,7 +3,7 @@ import type { User } from "../user";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { userService } from "../user.service";
-import { useAuth } from "../../auth/auth.context";
+import { useAuth } from "../../../core/contexts/auth.context";
 import DocumentUpload from "../document-upload/document-upload";
 
 interface UserDetailsProps {

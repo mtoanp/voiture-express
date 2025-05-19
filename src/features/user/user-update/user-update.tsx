@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { userService } from "../user.service";
-import { useAuth } from "../../auth/auth.context";
+import { useAuth } from "../../../core/contexts/auth.context";
 import FormInput from "../../../shared/form/form-input/form-input";
 import type { User } from "../user";
 

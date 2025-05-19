@@ -22,5 +22,5 @@ const appRoutes = [
 
 // Create & Export router as an instantiated object
 import { createBrowserRouter } from "react-router-dom";
-import AuthGuard from "../features/auth/auth.guard";
+import AuthGuard from "../core/guards/auth.guard";
 export const router = createBrowserRouter(appRoutes);
