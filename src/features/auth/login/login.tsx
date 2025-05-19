@@ -2,8 +2,8 @@ import "./login.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../auth.service";
-import { useAuth } from "../auth.context";
 import FormInput from "../../../shared/form/form-input/form-input";
+import { useAuth } from "../../../core/contexts/auth.context";
 
 const LogIn = () => {
   const [user, setUser] = useState({

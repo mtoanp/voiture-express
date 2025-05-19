@@ -13,7 +13,7 @@ const Home = () => {
           </div>
 
           <div className="start">
-            <button className="bg-rainbow" onClick={() => navigate("/auth")}>
+            <button className="bg-rainbow" onClick={() => navigate("/profile")}>
               Start
             </button>
           </div>

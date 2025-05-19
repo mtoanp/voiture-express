@@ -1,7 +1,7 @@
 import "./navbar.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaPowerOff, FaUser } from "react-icons/fa"; // FontAwesome
-import { useAuth } from "../../../features/auth/auth.context";
+import { useAuth } from "../../../core/contexts/auth.context";
 import { GiSteeringWheel } from "react-icons/gi";
 
 const Navbar = () => {

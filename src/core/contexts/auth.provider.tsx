@@ -1,7 +1,7 @@
 import { AuthContext } from "./auth.context";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import type { AuthUser } from "./auth-user";
+import type { AuthUser } from "../../features/auth/auth-user";
 
 const API = import.meta.env.VITE_API_URL;
 

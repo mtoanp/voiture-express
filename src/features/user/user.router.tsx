@@ -1,5 +1,5 @@
-import AdminGuard from "../auth/admin.guard";
-import AuthGuard from "../auth/auth.guard";
+import AdminGuard from "../../core/guards/admin.guard";
+import AuthGuard from "../../core/guards/auth.guard";
 import NewUser from "./user-create/user-create";
 import UserDetails from "./user-detail/user-detail";
 import UserList from "./user-list/user-list";
