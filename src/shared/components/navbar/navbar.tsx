@@ -5,7 +5,7 @@ import { useAuth } from "../../../features/auth/auth.context";
 import { GiSteeringWheel } from "react-icons/gi";
 
 const Navbar = () => {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -19,7 +19,8 @@ const Navbar = () => {
         {/* <img src="/logo.png" alt="VE Logo" style={{ width: "auto", height: "50px" }} /> */}
         <GiSteeringWheel size={32} color={"#dc3545"} />
       </NavLink>
-      {/* <NavLink to="/users">Users</NavLink> */}
+
+      {isAdmin && <NavLink to="/users">Admin Panel</NavLink>}
 
       <div className="nav-right">
         {!currentUser ? (

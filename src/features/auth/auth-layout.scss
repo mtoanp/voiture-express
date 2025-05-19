@@ -1,12 +1,10 @@
 .auth-layout {
-    // background-color: black;
     // background-color: #080710;
     .auth {
         $size: 100px;
-        width: 500px;
         background-color: #fdfdff;
         .background {
-            width: 500px;
+            width: 100%;
             height: 300px;
             position: absolute;
             top: -40px;
@@ -34,23 +32,12 @@
         }
 
         .control {
-            // position: absolute;
-            // top: 0;
-            // left: 50%;
-            // transform: translateX(-50%);
             z-index: 1 !important;
-
             width: 100%;
             margin: 1rem auto;
             display: flex;
             justify-content: space-between;
             gap: 1rem;
-
-            @media (max-width: 600px) {
-                width: 100%;
-                margin: 2rem 1rem;
-                width: calc(100% - 2rem);
-            }
 
             & > * {
                 flex: 1;

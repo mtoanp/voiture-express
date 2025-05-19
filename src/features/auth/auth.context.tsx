@@ -4,6 +4,7 @@ import type { AuthUser } from "./auth-user";
 export interface AuthContextType {
   currentUser: AuthUser | null; // ✅ now accepts null
   token: string | null;
+  isAdmin: boolean;
   login: (user: AuthUser, token: string) => void;
   logout: () => void;
 }
