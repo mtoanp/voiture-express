@@ -1,17 +1,9 @@
-// import type { AuthContextType } from "../auth/auth.context";
+// import type { AuthContextType } from "../../core/contexts/auth.context";
 import type { User } from "./user";
 
-const api = import.meta.env.VITE_API_URL;
-const API_URL = api + "/users";
+const API = import.meta.env.VITE_API_URL + "/users";
 
 class UserService {
-  // private token: string | null = null;
-
-  // // Allows injecting token from context
-  // setAuth(auth: Pick<AuthContextType, "token">) {
-  //   this.token = auth.token;
-  // }
-
   private getToken(): string | null {
     return localStorage.getItem("accessToken");
   }
@@ -28,21 +20,21 @@ class UserService {
   }
 
   async getUsers() {
-    const res = await fetch(API_URL, {
+    const res = await fetch(API, {
       headers: this.getHeaders(),
     });
     return res.json();
   }
 
   async getById(id: string) {
-    const res = await fetch(`${API_URL}/${id}`, {
+    const res = await fetch(`${API}/${id}`, {
       headers: this.getHeaders(),
     });
     return res;
   }
 
   async create(userData: User) {
-    const res = await fetch(API_URL, {
+    const res = await fetch(API, {
       method: "POST",
       headers: this.getHeaders(),
       body: JSON.stringify(userData),
@@ -51,7 +43,7 @@ class UserService {
   }
 
   async update(id: string, userData: User) {
-    const res = await fetch(`${API_URL}/${id}`, {
+    const res = await fetch(`${API}/${id}`, {
       method: "PATCH",
       headers: this.getHeaders(),
       body: JSON.stringify(userData),
@@ -60,7 +52,7 @@ class UserService {
   }
 
   async delete(id: string) {
-    const res = await fetch(`${API_URL}/${id}`, {
+    const res = await fetch(`${API}/${id}`, {
       method: "DELETE",
       headers: this.getHeaders(),
     });

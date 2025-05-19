@@ -1,28 +1,14 @@
-const api = import.meta.env.VITE_API_URL;
-const auth = api + "/auth";
+const API = import.meta.env.VITE_API_URL + "/auth";
 
 class AuthService {
-  private accessToken: string | null = localStorage.getItem("accessToken");
-
-  setToken(token: string) {
-    this.accessToken = token;
-    localStorage.setItem("accessToken", token);
-  }
-
-  clearToken() {
-    this.accessToken = null;
-    localStorage.removeItem("accessToken");
-  }
-
   private get headers() {
     return {
       "Content-Type": "application/json",
-      ...(this.accessToken && { Authorization: `Bearer ${this.accessToken}` }),
     };
   }
 
   async logIn(email: string, password: string) {
-    const res = await fetch(`${auth}/login`, {
+    const res = await fetch(`${API}/login`, {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify({ email, password }),
@@ -31,7 +17,7 @@ class AuthService {
   }
 
   async forgotPassword(email: string) {
-    const res = await fetch(`${auth}/forgot-password`, {
+    const res = await fetch(`${API}/forgot-password`, {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify({ email }),
@@ -39,13 +25,18 @@ class AuthService {
     return res;
   }
 
-  // async getProfile() {
-  //   const res = await fetch(`${auth}/profile`, {
-  //     method: "GET",
-  //     headers: this.headers,
-  //   });
-  //   return res;
-  // }
+  async getCurrentUser(token: string) {
+    const res = await fetch(`${API}/getCurrentUser`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) throw new Error("Invalid token");
+
+    return res.json(); // should return user object
+  }
 }
 
 // Export an instance of the class
