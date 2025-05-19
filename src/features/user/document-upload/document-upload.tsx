@@ -127,7 +127,10 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
 
   return (
     <div className="uploader-container card mt-8">
-      <h2 className="header text-2xl font-semibold">Permis de conduire</h2>
+      <div className="header flex">
+        <h2 className="text-2xl font-semibold">Permis de conduire</h2>
+        <div className="ml-2">( pdf / jpeg )</div>
+      </div>
 
       <div className="uploader-document">
         {errorMessage && <div className="error">{errorMessage}</div>}
