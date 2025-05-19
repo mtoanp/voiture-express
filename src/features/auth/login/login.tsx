@@ -1,22 +1,97 @@
 import "./login.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthService from "../auth.service"; // adjust path if needed
+import AuthService from "../auth.service";
 import { useAuth } from "../auth.context";
+import FormInput from "../../../shared/form/form-input/form-input";
 
 const LogIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<{ email?: string; password?: string }>({});
+
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  // ------------------------------------------------------------
+  // Validation rules
+  // ------------------------------------------------------------
+  const validate = (values: { email: string; password: string }) => {
+    const errors: { email?: string; password?: string } = {};
+
+    if (!values.email || !/\S+@\S+\.\S+/.test(values.email)) {
+      errors.email = "Valid email is required";
+    }
+
+    if (!values.password) {
+      errors.password = "Password is required";
+    }
+
+    return errors;
+  };
+
+  // ✅ Used to set errors during submission
+  const validateForm = () => {
+    const errors = validate(user);
+    setFormErrors(errors);
+    return errors;
+  };
+
+  // ✅ Used to enable/disable the button
+  const formIsValid = Object.keys(validate(user)).length === 0;
+
+  // ------------------------------------------------------------
+  // On Events
+  // ------------------------------------------------------------
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    // Update user input
+    setUser((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+
+    // Revalidate the updated field
+    const updatedValues = {
+      ...user,
+      [name]: value,
+    };
+
+    const errors = validate(updatedValues);
+
+    setFormErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+
+      if (errors[name as keyof typeof errors]) {
+        newErrors[name as keyof typeof errors] = errors[name as keyof typeof errors];
+      } else {
+        delete newErrors[name as keyof typeof errors];
+      }
+
+      return newErrors;
+    });
+
+    setError(null); // Clear global/server error
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setLoading(true);
+
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setLoading(false);
+      return;
+    }
 
     try {
-      const res = await AuthService.logIn(email, password);
+      const res = await AuthService.logIn(user.email, user.password);
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -26,51 +101,37 @@ const LogIn = () => {
       }
 
       const data = await res.json();
-      const { user, access_token } = data;
-      console.log(data);
-
-      // Save token in service (optional)
-      AuthService.setToken(access_token);
-
-      // Save to context
-      login(user, access_token);
+      AuthService.setToken(data.access_token);
+      login(data.user, data.access_token);
       navigate("/profile");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unexpected error");
+    } finally {
+      setLoading(false);
     }
   };
 
+  // ------------------------------------------------------------
+  // HTML
+  // ------------------------------------------------------------
   return (
-    <div className="login">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
-        <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Login</h2>
-        {error && <p className="text-red-600 text-sm mb-4 text-center">{error}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Email</label>
-            <input
-              type="email"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Password</label>
-            <input
-              type="password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">
-            Log In
-          </button>
-        </form>
-      </div>
+    <div className="login w-full shadow-lg p-8 card">
+      <h2 className="text-3xl font-bold text-center text-blue-600">Login</h2>
+
+      <form onSubmit={handleSubmit} className="form my-4">
+        {error && <div className="bg-red-100 text-red-700 p-2 rounded text-sm mb-4">{error}</div>}
+
+        <FormInput type="email" name="email" value={user.email} onChange={onChange} error={formErrors.email} placeholder="Email" />
+
+        <FormInput type="password" name="password" value={user.password} onChange={onChange} error={formErrors.password} placeholder="Password" />
+
+        <button
+          type="submit"
+          disabled={loading || !formIsValid}
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:opacity-50">
+          {loading ? "Logging in..." : "Log In"}
+        </button>
+      </form>
     </div>
   );
 };

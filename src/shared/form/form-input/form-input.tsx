@@ -12,7 +12,7 @@ interface FormInputProps {
   label?: string;
 }
 
-const FormInput: React.FC<FormInputProps> = ({ name, type = "text", id, value, onChange, error, placeholder, label }) => {
+const FormInput: React.FC<FormInputProps> = ({ name, type = "text", id, value, onChange, error, placeholder }) => {
   const [showPassword, setShowPassword] = useState(false);
   const inputId = id || name;
 
@@ -23,10 +23,10 @@ const FormInput: React.FC<FormInputProps> = ({ name, type = "text", id, value, o
   const inputType = type === "password" && showPassword ? "text" : type;
 
   return (
-    <div className="mb-4 w-full">
-      <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 mb-1">
+    <div className="mb-6 w-full">
+      {/* <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 mb-1">
         {label || placeholder || name}
-      </label>
+      </label> */}
 
       <div className="relative">
         <input

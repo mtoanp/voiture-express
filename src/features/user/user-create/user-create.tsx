@@ -1,5 +1,4 @@
 import "./user-create.scss";
-// import type { User } from "../user";
 import { useAuth } from "../../auth/auth.context";
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
@@ -9,26 +8,22 @@ import FormInput from "../../../shared/form/form-input/form-input";
 const NewUser = () => {
   const { currentUser, login } = useAuth();
   const [user, setUser] = useState({
-    // name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<{
-    name?: string;
     email?: string;
     password?: string;
     confirmPassword?: string;
-    server?: string;
   }>({});
 
   const navigate = useNavigate();
 
-  // ------------------------------------------------------------
-  // If the user is already logged in, redirect them to the home page or another page
-  // ------------------------------------------------------------
+  // 🚫 Redirect if already logged in
   if (currentUser) {
     return <Navigate to="/" />;
   }
@@ -36,49 +31,82 @@ const NewUser = () => {
   // ------------------------------------------------------------
   // Validation rules
   // ------------------------------------------------------------
-  const validateForm = () => {
+  const validate = (values: typeof user) => {
     const errors: {
-      // name?: string;
       email?: string;
       password?: string;
       confirmPassword?: string;
     } = {};
 
-    // if (!user.name) errors.name = "Name is required";
-    if (!user.email || !/\S+@\S+\.\S+/.test(user.email)) errors.email = "Valid email is required";
-    if (!user.password || user.password.length < 6) errors.password = "Password must be at least 6 characters";
-    if (user.password !== user.confirmPassword) errors.confirmPassword = "Passwords do not match";
+    if (!values.email || !/\S+@\S+\.\S+/.test(values.email)) {
+      errors.email = "Valid email is required";
+    }
 
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,32}$/;
+    if (!values.password) {
+      errors.password = "Password is required";
+    } else if (values.password.length < 8 || values.password.length > 32) {
+      errors.password = "Password must be between 8 and 32 characters";
+    } else if (!passwordRegex.test(values.password)) {
+      errors.password = "Password must include at least one uppercase letter, one number, and one special character (!@#$%^&*)";
+    }
+
+    if (values.password !== values.confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
+    }
+
+    return errors;
+  };
+
+  // ✅ Set validation errors to state
+  const validateForm = () => {
+    const errors = validate(user);
     setFormErrors(errors);
     return errors;
   };
+
+  // ✅ Used for disabling the submit button
+  const formIsValid = Object.keys(validate(user)).length === 0;
 
   // ------------------------------------------------------------
   // On Events
   // ------------------------------------------------------------
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    // Update the field value
     setUser((prevState) => ({
       ...prevState,
       [name]: value,
     }));
 
-    // Clear the errors
-    setError(null);
-    setFormErrors((prevState) => ({
-      ...prevState,
-      [name]: "", // Clear the individual field error
-    }));
+    // Revalidate that field in the context of the full form
+    const updatedValues = {
+      ...user,
+      [name]: value,
+    };
+
+    const errors = validate(updatedValues);
+
+    setFormErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+
+      if (errors[name as keyof typeof errors]) {
+        newErrors[name as keyof typeof errors] = errors[name as keyof typeof errors];
+      } else {
+        delete newErrors[name as keyof typeof errors]; // ✅ Remove error if fixed
+      }
+
+      return newErrors;
+    });
+
+    setError(null); // clear generic error
   };
 
-  // ------------------------------------------------------------
-  // On Submit
-  // ------------------------------------------------------------
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
 
-    // Validate the form
     const errors = validateForm();
     if (Object.keys(errors).length !== 0) {
       setLoading(false);
@@ -86,14 +114,13 @@ const NewUser = () => {
     }
 
     try {
-      // ✅ Extract only the fields to send
       const payload = {
         email: user.email,
         password: user.password,
       };
 
       const response = await userService.create(payload);
-      const data = await response.json(); // Parse the JSON response
+      const data = await response.json();
 
       if (!response.ok) {
         if (response.status === 409) {
@@ -102,12 +129,9 @@ const NewUser = () => {
             email: "Email already exists",
           }));
         }
-
         throw new Error(data.error || "Failed to create user");
       }
 
-      // Handle successful login (e.g., store tokens, redirect)
-      console.warn("User created", data);
       login(data.user, data.access_token);
       navigate("/");
     } catch (error) {
@@ -117,20 +141,15 @@ const NewUser = () => {
     }
   };
 
-  // if (loading) return <p>Loading...</p>;
-  // if (error) return <p>Error: {error}</p>;
-
   // ------------------------------------------------------------
   // HTML
   // ------------------------------------------------------------
   return (
-    <div className="NewUser max-w-md mx-auto mt-10 bg-white p-8 shadow-lg rounded">
-      <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
+    <div className="user-create p-8 shadow-lg card">
+      <h2 className="text-3xl font-bold text-center text-blue-600">Register</h2>
 
-      <form onSubmit={onSubmit} className="space-y-4">
-        {error && <div className="bg-red-100 text-red-700 p-2 rounded text-sm">{error}</div>}
-
-        {/* <FormInput name="name" value={user.name} onChange={onChange} error={formErrors.name} placeholder="Name" /> */}
+      <form onSubmit={onSubmit} className="form my-4">
+        {error && <div className="bg-red-100 text-red-700 p-2 rounded text-sm mb-4">{error}</div>}
 
         <FormInput type="email" name="email" value={user.email} onChange={onChange} error={formErrors.email} placeholder="Email" />
 
@@ -147,7 +166,7 @@ const NewUser = () => {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || !formIsValid}
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:opacity-50">
           {loading ? "Creating..." : "Sign Up"}
         </button>
