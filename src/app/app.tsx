@@ -4,6 +4,9 @@ import NavBar from "../shared/components/navbar/navbar";
 import Footer from "../shared/components/footer/footer";
 
 function App() {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  console.log("test env: apiUrl", apiUrl);
+
   return (
     <div className="app">
       <NavBar />
