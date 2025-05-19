@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import "./document-upload.scss";
 import { uploadDocument, removeDocument } from "./document.service";
 import type { User } from "../user";
@@ -122,6 +122,7 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
 
       <div className="uploader-document">
         {errorMessage && <div className="error">{errorMessage}</div>}
+        {status}
 
         <form onSubmit={handleUpload} className="form">
           <label htmlFor="file-input" className="full-container-label">
