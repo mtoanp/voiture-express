@@ -26,10 +26,10 @@ body {
     background-color: #e3e6e6;
     margin: 0;
     padding: 0;
-    &::-webkit-scrollbar {
-        width: 0px;
-    }
     overflow: hidden;
+    // &::-webkit-scrollbar {
+    //     width: 0px;
+    // }
     // background-color: aqua;
 }
 
