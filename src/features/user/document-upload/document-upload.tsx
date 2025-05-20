@@ -129,7 +129,7 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
     <div className="uploader-container card mt-8">
       <div className="header flex">
         <h2 className="text-2xl font-semibold">Permis de conduire</h2>
-        <div className="ml-2">( pdf / jpeg )</div>
+        <div className="sub-title ml-2 hidden sm:block">( pdf / jpeg )</div>
       </div>
 
       <div className="uploader-document">

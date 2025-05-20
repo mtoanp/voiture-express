@@ -51,6 +51,7 @@ const UserDetails = ({ id: propId }: UserDetailsProps) => {
     if (currentUser) {
       getUser();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, state]);
 
   if (loading) return <p>Loading...</p>;
