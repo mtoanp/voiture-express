@@ -53,7 +53,7 @@ const UserList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="user-list max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
+    <div className="user-list max-w-3xl mx-auto my-6 p-6 bg-white shadow-md rounded-md">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-gray-800">User List</h2>
         <Link to="/users/new" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
