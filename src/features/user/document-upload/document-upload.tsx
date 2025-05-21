@@ -30,7 +30,7 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
       setPreviewUrl(null);
     }
 
-    // ✅ Reset the file input to allow re-selecting same file later
+    // Reset the file input to allow re-selecting same file later
     input.value = "";
   };
 
@@ -95,11 +95,18 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
     }
   };
 
+  /* ---------------------------------------------------- */
+  /* Render Ducoment */
+  /* ---------------------------------------------------- */
+
   const renderDocument = () => {
     if (!documentUrl) return null;
 
-    const isImage = /\.(jpg|jpeg)$/i.test(documentUrl);
-    const isPDF = /\.pdf$/i.test(documentUrl);
+    const url = new URL(documentUrl);
+    const pathname = url.pathname; // extract the part: /product/file.pdf
+
+    const isImage = /\.(jpg|jpeg)$/i.test(pathname);
+    const isPDF = /\.pdf$/i.test(pathname);
 
     return (
       <div className="document card mt-6 relative">
@@ -132,6 +139,9 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
         <div className="sub-title ml-2 hidden sm:block">( pdf / jpeg )</div>
       </div>
 
+      {/* ---------------------------------------------------- */}
+      {/* Uploader */}
+      {/* ---------------------------------------------------- */}
       <div className="uploader-document">
         {errorMessage && <div className="error">{errorMessage}</div>}
 
@@ -183,6 +193,9 @@ const DocumentUpload: React.FC<Props> = ({ user }) => {
 
       <div className="status w-full flex items-center justify-center text-center">{status}</div>
 
+      {/* ---------------------------------------------------- */}
+      {/* Render */}
+      {/* ---------------------------------------------------- */}
       {renderDocument()}
     </div>
   );
